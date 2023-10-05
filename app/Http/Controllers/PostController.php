@@ -63,13 +63,11 @@ class PostController extends Controller
         $image->storeAs('public/posts', $image->hashName());
 
         //create post
-        $data = Post::create([
+        Post::create([
             'image'     => $image->hashName(),
             'title'     => $request->title,
             'content'   => $request->content
         ]);
-
-        $data->save();
 
         //redirect to index
         return redirect()->route('posts.index')->with(['success' => 'Data Berhasil Disimpan!']);
