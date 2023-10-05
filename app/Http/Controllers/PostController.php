@@ -51,7 +51,7 @@ class PostController extends Controller
      * @param  mixed $request
      * @return RedirectResponse
      */
-    public function store($request): RedirectResponse
+    public function store(StorePostRequest $request): RedirectResponse
     {
         //validate form
         $this->validate($request, [
@@ -65,11 +65,13 @@ class PostController extends Controller
         $image->storeAs('public/posts', $image->hashName());
 
         //create post
-        Post::create([
+        $data = Post::create([
             'image'     => $image->hashName(),
             'title'     => $request->title,
             'content'   => $request->content
         ]);
+
+        $data->save();
 
         //redirect to index
         return redirect()->route('posts.index')->with(['success' => 'Data Berhasil Disimpan!']);
@@ -112,7 +114,7 @@ class PostController extends Controller
      * @param  mixed $id
      * @return RedirectResponse
      */
-    public function update($request, $id): RedirectResponse
+    public function update(UpdatePostRequest $request, $id): RedirectResponse
     {
         //validate form
         $this->validate($request, [
